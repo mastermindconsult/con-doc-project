@@ -1,2 +1,1 @@
-#waiting for Engineer John
-#create VPC
+#awaiting Engineer John
