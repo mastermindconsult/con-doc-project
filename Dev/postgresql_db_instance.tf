@@ -15,14 +15,3 @@ resource "aws_db_instance" "database" {
   db_subnet_group_name   = "${aws_db_subnet_group.dbsubnetgroup.name}"
 
 }
-
-/*Configure the RDS provider
-terraform {
-  required_providers {
-    postgresql = {
-      source  = "cyrilgdn/postgresql"
-    }
-  }
-
- 
-}
