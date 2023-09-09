@@ -1,6 +1,6 @@
 variable "region" {}
 #testing merge and pull
-variable "project_name" {}
+#variable "project_name" {}
 #dbsubnetgroup attributes
 variable "name" {}
 #rds database attributes
