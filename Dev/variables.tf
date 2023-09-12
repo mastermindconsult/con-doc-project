@@ -19,3 +19,19 @@ variable "repository_name" {}
 variable "image_tag" {}
 variable "root_domain_name" {}
 variable "sub_domain_name" {}
+
+
+#networking variables
+variable "region" {}
+variable "vpc_cidr" {}
+variable "instance_tenancy" {}
+variable "enable_dns_hostnames" {}
+variable "enable_dns_support" {}
+variable "project_name" {}
+variable "environment" {}
+variable "public_subnet_cidrs" {}
+variable "private_subnet_cidrs" {}
+variable "map_public_ip_on_launch" {}
+variable "map_private_ip_on_launch" {}
+variable "enable_public_resource_name_dns_a_record_on_launch" {}
+variable "enable_private_resource_name_dns_a_record_on_launch" {}
