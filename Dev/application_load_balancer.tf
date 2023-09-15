@@ -4,7 +4,7 @@ resource "aws_lb" "load-balancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = ["${aws_security_group.sg.id}"]
-  subnets            = [aws_subnet.public-subnets[0].id, aws_subnet.public-subnets[1].id]
+  subnets            = [aws_subnet.public[0].id, aws_subnet.[1].id]
   enable_deletion_protection = false
 
   tags   = {
