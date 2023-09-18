@@ -1,5 +1,4 @@
-# ECS Autoscaling IAM Role 
-##################################################
+# ecs autoscaling IAM role 
 
 resource "aws_iam_role" "ecs_autoscale_role" {
   name               = "${var.project_name}_ECS_AutoscaleRole_${var.environment}"
@@ -24,8 +23,7 @@ EOF
   }
 }
 
-# ECS Autoscaling IAM Role Policy Attachment 
-##################################################
+# ecs autoscaling IAM role policy attachment 
 
 resource "aws_iam_role_policy_attachment" "ecs-autoscale-role-policy-attachment" {
   role       = aws_iam_role.ecs_autoscale_role.name

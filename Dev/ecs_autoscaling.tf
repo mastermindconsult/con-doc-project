@@ -1,16 +1,14 @@
-# Create ECS Autoscaling Target
-##################################################
+# create ecs autoscaling target
 
 resource "aws_appautoscaling_target" "ecs_service_autoscaling_target" {
   max_capacity       = var.max_capacity
   min_capacity       = var.min_capacity
-  resource_id        = "service/${aws_ecs_cluster.cluster.name}/${aws_ecs_service.service.name}"
+  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = var.service_namespace
 }
 
-# ECS Autoscaling Policy - Memory
-##################################################
+# ecs autoscaling policy - memory
 
 resource "aws_appautoscaling_policy" "autoscaling_policy_memory" {
   name               = "${var.project_name}_ECS_AutoScaling_Memory_Policy_${var.environment}"
@@ -27,8 +25,7 @@ resource "aws_appautoscaling_policy" "autoscaling_policy_memory" {
   depends_on = [aws_appautoscaling_target.ecs_service_autoscaling_target]
 }
 
-# ECS Autoscaling Policy - CPU
-##################################################
+# ecs autoscaling policy - CPU
 
 resource "aws_appautoscaling_policy" "autoscaling_policy_cpu" {
   name               = "${var.project_name}_ECS_AutoScaling_CPU_Policy_${var.environment}"
