@@ -10,6 +10,18 @@ data "aws_availability_zones" "available" {
 }
 
 
+# Configure the AWS Provider
+provider "aws" {
+    region = var.region
+}
+
+
+# Create data block for AZs
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+
 # Create VPC
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
@@ -96,22 +108,23 @@ resource "aws_route_table_association" "public" {
 # Create Elastic IPs
 resource "aws_eip" "eip" {
   count = 2
-
   domain = "vpc"
   tags = {
     Name = "${var.project_name}_eip_${count.index + 1}"
+    Name = "${var.project_name}_eip"
     environment = var.environment
   }
 }
 
 
-# Create NAT Gateways
+# Create NAT Gateway
 resource "aws_nat_gateway" "ngw" {
   count = 2
 
   allocation_id = aws_eip.eip[count.index].id
   subnet_id      = aws_subnet.public[count.index].id
-
+  allocation_id = aws_eip.eip.id
+  subnet_id      = aws_subnet.public[0].id
   tags = {
     Name = "${var.project_name}_ngw_${count.index + 1}"
     environment = var.environment
@@ -130,7 +143,6 @@ resource "aws_route_table" "private" {
   count = 2
   
   vpc_id = aws_vpc.vpc.id
-
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.ngw[count.index].id
@@ -148,5 +160,7 @@ resource "aws_route_table_association" "private" {
   count = 2
 
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[count.index].id
+  route_table_id = aws_route_table.private.id
   }
+
+
