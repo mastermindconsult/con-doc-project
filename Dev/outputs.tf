@@ -14,3 +14,8 @@ output "prod_sg_id" {
   value       = aws_security_group.sg["Prod"].id
   description = "Terraform please provide Production security group as soon as you APPLY"
 }
+
+# image url
+output "image_url" {
+    value = aws_ecr_repository.ecr_repo.repository_url
+}
