@@ -1,4 +1,4 @@
-#create A record
+# create A record
 
 resource "aws_route53_record" "route53_a_record" {
   zone_id = data.aws_route53_zone.route53_zone.zone_id
@@ -23,14 +23,6 @@ resource "aws_acm_certificate" "acm_certificate" {
   lifecycle {
     create_before_destroy = true
   }
-}
-
-
-# get details about a route 53 hosted zone
-
-data "aws_route53_zone" "route53_zone" {
-  name         = var.domain_name
-  private_zone = false
 }
 
 
@@ -60,4 +52,3 @@ resource "aws_acm_certificate_validation" "acm_certificate_validation" {
   certificate_arn         = aws_acm_certificate.acm_certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.route53_record_set : record.fqdn]
 }
-

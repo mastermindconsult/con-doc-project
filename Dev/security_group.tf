@@ -1,4 +1,3 @@
-
 # create security group (using dynamic block)
 
 resource "aws_security_group" "sg" {
@@ -27,7 +26,7 @@ resource "aws_security_group" "sg" {
   }
 
   tags = {
-    Name        = "SG_${each.key}_${var.project_name}"
+    Name        = "SG_${each.key}-${var.project_name}"
     Environment = var.environment
     Provider    = "Terraform"
   }

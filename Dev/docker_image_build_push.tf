@@ -10,5 +10,5 @@ resource "null_resource" "docker_build_push" {
     command     = "chmod +x update-ecr.sh && sh -x update-ecr.sh"
 
   }
-  depends_on = [aws_ecrpublic_repository.ecr_repo, aws_ecrpublic_repository_policy.demo-repo-policy]
+  depends_on = [aws_ecrpublic_repository.ecr_repo, aws_ecrpublic_repository_policy.repo_policy]
 }

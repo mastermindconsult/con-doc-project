@@ -12,7 +12,7 @@ resource "aws_appautoscaling_target" "ecs_service_autoscaling_target" {
 # ECS autoscaling policy - memory
 
 resource "aws_appautoscaling_policy" "autoscaling_policy_memory" {
-  name               = "${var.project_name}_ECS_AutoScaling_Memory_Policy_${var.environment}"
+  name               = "${var.project_name}-ECS-AutoScaling-Memory-Policy-${var.environment}"
   policy_type        = var.policy_type
   resource_id        = aws_appautoscaling_target.ecs_service_autoscaling_target.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_service_autoscaling_target.scalable_dimension
@@ -30,7 +30,7 @@ resource "aws_appautoscaling_policy" "autoscaling_policy_memory" {
 # ECS autoscaling policy - CPU
 
 resource "aws_appautoscaling_policy" "autoscaling_policy_cpu" {
-  name               = "${var.project_name}_ECS_AutoScaling_CPU_Policy_${var.environment}"
+  name               = "${var.project_name}-ECS-AutoScaling-CPU-Policy-${var.environment}"
   policy_type        = var.policy_type
   resource_id        = aws_appautoscaling_target.ecs_service_autoscaling_target.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_service_autoscaling_target.scalable_dimension

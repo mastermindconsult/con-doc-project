@@ -15,7 +15,10 @@ output "prod_sg_id" {
   description = "Terraform please provide Production security group as soon as you APPLY"
 }
 
+
 # image url
+
 output "image_url" {
-  value = aws_ecr_repository.ecr_repo.repository_url
+  value       = aws_ecrpublic_repository.ecr_repo.repository_uri
+  description = "Terraform please provide Image URL as soon as you APPLY"
 }

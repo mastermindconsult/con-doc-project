@@ -1,6 +1,6 @@
 # create ECS application load balancer
 
-resource "aws_lb" "load-balancer" {
+resource "aws_lb" "load_balancer" {
   name                       = "${var.project_name}-load-balancer"
   internal                   = false
   load_balancer_type         = "application"

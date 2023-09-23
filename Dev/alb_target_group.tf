@@ -1,6 +1,6 @@
 # create ECS ALB target group with HTTP protocol (port 80)
 
-resource "aws_lb_target_group" "lb-target-group" {
+resource "aws_lb_target_group" "lb_target_group" {
   name        = "${var.project_name}-lb-target-group"
   target_type = "ip"
   port        = 80

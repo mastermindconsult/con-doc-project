@@ -9,15 +9,17 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   }
 }
 
+
 # create cloudwatch log group
 
-/*resource "aws_cloudwatch_log_group" "log_group" {
+resource "aws_cloudwatch_log_group" "log_group" {
   name = "/ecs/${var.project_name}-task-definition"
 
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
-}*/
+}
+
 
 # create task definition
 
@@ -66,6 +68,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
     }
   ])
 }
+
 
 # create ECS service
 
