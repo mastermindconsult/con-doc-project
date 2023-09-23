@@ -1,4 +1,4 @@
-#0. Create DB Subnet Group
+# create DB subnet group
 
 resource "aws_db_subnet_group" "dbsubnetgroup" {
   name       = "${var.project_name}-dbsng"
