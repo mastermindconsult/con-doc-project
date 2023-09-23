@@ -1,4 +1,4 @@
-# ecs autoscaling IAM role 
+# ECS autoscaling IAM role 
 
 resource "aws_iam_role" "ecs_autoscale_role" {
   name               = "${var.project_name}_ECS_AutoscaleRole_${var.environment}"
