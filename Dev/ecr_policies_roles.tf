@@ -1,8 +1,9 @@
-# Provision an AWS IAM role for ECR access
-resource "aws_iam_role" "ecr_role" {
-    name = "${var.project_name}-${var.environment}-ecr_role"
+# provision an AWS IAM role for ECR access
 
-    assume_role_policy = <<EOF
+resource "aws_iam_role" "ecr_role" {
+  name = "${var.project_name}-${var.environment}-ecr_role"
+
+  assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -19,32 +20,32 @@ EOF
 }
 
 resource "aws_iam_policy" "policy" {
-    name = "${var.project_name}-${var.environment}-ecr-access-policy"
-        policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-        {
+  name = "${var.project_name}-${var.environment}-ecr-access-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
         Action = [
-            "ecr:*",
+          "ecr:*",
         ]
         Effect   = "Allow"
         Resource = "*"
-        },
-        ]
-    })
+      },
+    ]
+  })
 }
 
 
 resource "aws_iam_policy_attachment" "attach" {
-    name       = "${var.project_name}-${var.environment}-policy_role_attachment"
-    roles      = ["${aws_iam_role.ecr_role.name}"]
-    policy_arn = "${aws_iam_policy.policy.arn}"
+  name       = "${var.project_name}-${var.environment}-policy_role_attachment"
+  roles      = ["${aws_iam_role.ecr_role.name}"]
+  policy_arn = aws_iam_policy.policy.arn
 }
 
 
 resource "aws_ecrpublic_repository_policy" "repo-policy" {
-    repository_name = aws_ecrpublic_repository.ecr_repo.repository_name
-    policy     = <<EOF
+  repository_name = aws_ecrpublic_repository.ecr_repo.repository_name
+  policy          = <<EOF
     {
     "Version": "2008-10-17",
     "Statement": [
