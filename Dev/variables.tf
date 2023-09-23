@@ -17,6 +17,7 @@ variable "repository_name" {}
 variable "image_tag" {}
 variable "root_domain_name" {}
 variable "sub_domain_name" {}
+variable "domain_name" {}
 
 
 # networking variables

@@ -17,5 +17,5 @@ output "prod_sg_id" {
 
 # image url
 output "image_url" {
-    value = aws_ecr_repository.ecr_repo.repository_url
+  value = aws_ecr_repository.ecr_repo.repository_url
 }
