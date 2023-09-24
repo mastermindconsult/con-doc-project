@@ -91,7 +91,7 @@ resource "aws_route_table_association" "public" {
 # create elastic IPs
 
 resource "aws_eip" "eip" {
-  count = 2
+  count  = 2
   domain = "vpc"
   tags = {
     Name        = "${var.project_name}-EIP-${count.index + 1}"
