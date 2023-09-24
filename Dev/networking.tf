@@ -1,28 +1,5 @@
-# Configure the AWS Provider
-provider "aws" {
-    region = var.region
-}
+# create VPC
 
-
-# Create data block for AZs
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-
-# Configure the AWS Provider
-provider "aws" {
-    region = var.region
-}
-
-
-# Create data block for AZs
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-
-# Create VPC
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   instance_tenancy     = var.instance_tenancy
@@ -30,57 +7,62 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = var.enable_dns_support
 
   tags = {
-    Name = "${var.project_name}_vpc"
+    Name        = "${var.project_name}-VPC"
     environment = var.environment
   }
 }
 
-# Create Public Subnets
+
+# create public subnets
+
 resource "aws_subnet" "public" {
   count = 2
 
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = var.public_subnet_cidrs[count.index]
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  map_public_ip_on_launch = var.map_public_ip_on_launch
+  vpc_id                                      = aws_vpc.vpc.id
+  cidr_block                                  = var.public_subnet_cidrs[count.index]
+  availability_zone                           = data.aws_availability_zones.available.names[count.index]
+  map_public_ip_on_launch                     = var.map_public_ip_on_launch
   enable_resource_name_dns_a_record_on_launch = var.enable_public_resource_name_dns_a_record_on_launch
-  
+
   tags = {
-    Name = "${var.project_name}_public_subnet_${count.index + 1}"
+    Name        = "${var.project_name}-public-subnet-${count.index + 1}"
     environment = var.environment
   }
 }
 
 
-# Create Private Subnets
+# create private subnets
+
 resource "aws_subnet" "private" {
   count = 2
 
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = var.private_subnet_cidrs[count.index]
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  map_public_ip_on_launch = var.map_private_ip_on_launch
+  vpc_id                                      = aws_vpc.vpc.id
+  cidr_block                                  = var.private_subnet_cidrs[count.index]
+  availability_zone                           = data.aws_availability_zones.available.names[count.index]
+  map_public_ip_on_launch                     = var.map_private_ip_on_launch
   enable_resource_name_dns_a_record_on_launch = var.enable_private_resource_name_dns_a_record_on_launch
- 
+
   tags = {
-    Name = "${var.project_name}_private_subnet_${count.index + 1}"
+    Name        = "${var.project_name}-private-subnet-${count.index + 1}"
     environment = var.environment
   }
 }
 
 
-# Internet Gateway
+# internet gateway
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.project_name}_igw"
+    Name        = "${var.project_name}-IGW"
     environment = var.environment
   }
 }
 
 
-# Create Public Route Table for Public Subnets 
+# create public route table for public subnets 
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
 
@@ -90,13 +72,14 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${var.project_name}_public_route_table"
+    Name        = "${var.project_name}-public-route-table"
     environment = var.environment
   }
 }
 
 
-# Associate Public Route Table with Public Subnets
+# associate public route table with public subnets
+
 resource "aws_route_table_association" "public" {
   count = 2
 
@@ -105,28 +88,28 @@ resource "aws_route_table_association" "public" {
 }
 
 
-# Create Elastic IPs
+# create elastic IPs
+
 resource "aws_eip" "eip" {
   count = 2
   domain = "vpc"
   tags = {
-    Name = "${var.project_name}_eip_${count.index + 1}"
-    Name = "${var.project_name}_eip"
+    Name        = "${var.project_name}-EIP-${count.index + 1}"
     environment = var.environment
   }
 }
 
 
-# Create NAT Gateway
+# create NAT gateways
+
 resource "aws_nat_gateway" "ngw" {
   count = 2
 
   allocation_id = aws_eip.eip[count.index].id
-  subnet_id      = aws_subnet.public[count.index].id
-  allocation_id = aws_eip.eip.id
-  subnet_id      = aws_subnet.public[0].id
+  subnet_id     = aws_subnet.public[count.index].id
+
   tags = {
-    Name = "${var.project_name}_ngw_${count.index + 1}"
+    Name        = "${var.project_name}-NGW-${count.index + 1}"
     environment = var.environment
   }
 
@@ -138,29 +121,28 @@ resource "aws_nat_gateway" "ngw" {
 }
 
 
-# Create Private Route Tables for Private Subnets
+# create private route tables for private subnets
+
 resource "aws_route_table" "private" {
   count = 2
-  
+
   vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.ngw[count.index].id
   }
   tags = {
-    Name = "${var.project_name}_private_route_table_${count.index + 1}"
+    Name        = "${var.project_name}-private-route-table-${count.index + 1}"
     environment = var.environment
   }
 }
 
 
+# associate private route tables with private subnets
 
-# Associate Private Route Tables with Private Subnets
 resource "aws_route_table_association" "private" {
   count = 2
 
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
-  }
-
-
+  route_table_id = aws_route_table.private[count.index].id
+}
