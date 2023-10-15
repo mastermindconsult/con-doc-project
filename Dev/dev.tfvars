@@ -13,3 +13,15 @@ map_public_ip_on_launch                             = true
 map_private_ip_on_launch                            = false
 enable_public_resource_name_dns_a_record_on_launch  = true
 enable_private_resource_name_dns_a_record_on_launch = false
+
+
+#rds database attributes
+allocated_storage     = 20
+max_allocated_storage = 100
+engine                = "postgres"
+engine_version        = "14.7"
+instance_class        = "db.t3.micro"
+db_name               = "dbtest"
+parameter_group_name  = "default.postgres14"
+skip_final_snapshot   = true
+db_subnet_group_name  = "dbsng"
